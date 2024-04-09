@@ -2,74 +2,58 @@ const userService = require("../service/userService");
 const joi = require("joi");
 const createduserSchema = joi.object().keys({
   password: joi.string().required(),
-  email: joi.string().required(),
-  rolesId: joi.string().required(),
-  appointmentId: joi.string().required(),
+  userEmail: joi.string().required(),
   userName: joi.string().required(),
-  phone: joi.number().required().min(11),
-  nic: joi.number().required().min(13),
+  phone: joi.number().required(),
+  nic: joi.number().required(),
   dob: joi.string().required(),
   gender: joi.string().required(),
-});
-const createRoleSchema = joi.object().keys({
-  rolename: joi.string().required().valid("Doctor", "Patient", "Admin"),
+  usertype: joi.string().required(),
+  department: joi.string().required(),
+  doctorEmail: joi.string().required(),
+  email: joi.string().required(),
 });
 const createappointmentSchema = joi.object().keys({
   userName: joi.string().required(),
-  phone: joi.number().required(11),
-  nic: joi.number().required().min(13),
+  phone: joi.number().required(),
+  nic: joi.number().required(),
   dob: joi.string().required(),
   gender: joi.string().required(),
   appointment_date: joi.string().required(),
-  status: joi.string().required(),
   email: joi.string().required(),
-  userId: joi.string().required(),
+  status: joi.string().required(),
+  doctorName: joi.string().required(),
+  address: joi.string().required(),
+  hasVisited: joi.string().required(),
+  department: joi.string().required(),
+  userEmail: joi.string().required(),
+  doctorEmail: joi.string().required(),
 });
 const deleteuserSchema = joi.object().keys({
-  userId: joi.string().required(),
+  userEmail: joi.string().required(),
 });
 const deleteappointmentSchema = joi.object().keys({
-  appointmentId: joi.string().required(),
+  email: joi.string().required(),
 });
-const getuserByUserIdSchema = joi.object().keys({
-  userId: joi.string().required(),
+const getuserByUserEmailSchema = joi.object().keys({
+  userEmail: joi.string().required(),
 });
 
 const updateuserSchema = joi.object().keys({
   userName: joi.string().required(),
-  userId: joi.string().required(),
+  userEmail: joi.string().required(),
 });
 module.exports = {
-  createRole: async (req, res) => {
+  getAlldr: async (req, res) => {
     try {
-      const validate = await createRoleSchema.validateAsync(req.body);
-
-      const role = await userService.createRole(validate);
-
-      if (role.error) {
+      const drs = await userService.getAlldr();
+      if (drs.error) {
         return res.send({
-          error: role.error,
+          error: drs.error,
         });
       }
       return res.send({
-        response: role.response,
-      });
-    } catch (error) {
-      return res.send({
-        error: error.message,
-      });
-    }
-  },
-  getRole: async (req, res) => {
-    try {
-      const role = await userService.getRole();
-      if (role.error) {
-        return res.send({
-          error: role.error,
-        });
-      }
-      return res.send({
-        response: role.response,
+        response: drs.response,
       });
     } catch (error) {
       return res.send({
@@ -80,9 +64,7 @@ module.exports = {
   createappointment: async (req, res) => {
     try {
       const validate = await createappointmentSchema.validateAsync(req.body);
-
       const appointment = await userService.createappointment(validate);
-
       if (appointment.error) {
         return res.send({
           error: appointment.error,
@@ -92,8 +74,6 @@ module.exports = {
         response: appointment.response,
       });
     } catch (error) {
-      //console.log("modererr", error);
-
       return res.send({
         error: error.message,
       });
@@ -102,12 +82,8 @@ module.exports = {
   createuser: async (req, res) => {
     try {
       const validate = await createduserSchema.validateAsync(req.body);
-
       const createduser = await userService.createuser(validate);
-      //console.log("check response", createduser);
       if (createduser.error) {
-        //console.log("checkcac", createduser.error);
-
         return res.send({
           error: createduser.error,
         });
@@ -116,8 +92,6 @@ module.exports = {
         response: createduser.response,
       });
     } catch (error) {
-      //console.log("modererr", error);
-
       return res.send({
         error: error.message,
       });
@@ -193,17 +167,17 @@ module.exports = {
       });
     }
   },
-  getuserByUserId: async (req, res) => {
+  getuserByUserEmail: async (req, res) => {
     try {
-      const validate = await getuserByUserIdSchema.validateAsync(req.query);
-      const user = await userService.getuserByUserId(validate);
-      if (user.error) {
+      const validate = await getuserByUserEmailSchema.validateAsync(req.query);
+      const userByEmail = await userService.getuserByUserEmail(validate);
+      if (userByEmail.error) {
         return res.send({
-          error: user.error,
+          error: userByEmail.error,
         });
       }
       return res.send({
-        response: user.response,
+        response: userByEmail.response,
       });
     } catch (error) {
       return res.send({

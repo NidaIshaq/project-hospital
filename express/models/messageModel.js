@@ -16,7 +16,7 @@ module.exports = {
   getAllmessage: async () => {
     try {
       const messages = await models.Messages.findAll({
-        attributes: ["email", "phone", "message"],
+        attributes: ["userName", "email", "phone", "message"],
       });
 
       return {

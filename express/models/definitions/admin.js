@@ -1,8 +1,7 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../../bin/dbConnection");
-
-class signup extends Model {}
-signup.init(
+class Admin extends Model {}
+Admin.init(
   {
     userName: {
       unique: true,
@@ -12,28 +11,30 @@ signup.init(
     email: {
       primaryKey: true,
       type: DataTypes.STRING(),
-      allowNull: false,
+      required: true,
     },
     password: {
-      unique: true,
-      allowNull: false,
       type: DataTypes.STRING(),
+      allowNull: false,
+    },
+    nic: {
+      type: DataTypes.STRING(),
+      allowNull: false,
+    },
+    dob: {
+      type: DataTypes.STRING(),
+      allowNull: false,
+    },
+    gender: {
+      type: DataTypes.STRING(),
+      allowNull: false,
     },
     phone: {
       type: DataTypes.STRING(),
       required: true,
     },
-    nic: {
+    usertype: {
       type: DataTypes.STRING(),
-      required: true,
-    },
-    dob: {
-      type: DataTypes.STRING(),
-      required: true,
-    },
-    gender: {
-      type: DataTypes.STRING(),
-      required: true,
     },
   },
   {
@@ -42,4 +43,4 @@ signup.init(
     sequelize,
   }
 );
-module.exports = signup;
+module.exports = Admin;

@@ -1,33 +1,23 @@
 const sequelize = require("../bin/dbConnection");
 const Users = require("./definitions/users");
-const signup = require("./definitions/signup");
 const Appointments = require("./definitions/appointments");
-const Roles = require("./definitions/roles");
 const Messages = require("./definitions/message");
-const userAppointment = require("./definitions/userAppointment");
+const Doctor = require("./definitions/doctor");
+const Admin = require("./definitions/admin");
 
 // relation start here
-Appointments.hasOne(Users, { foreignKey: "appointmentId" });
-Users.belongsTo(Appointments, { foreignKey: "appointmentId" });
+Users.hasMany(Appointments, { foreignKey: "userEmail" });
+Appointments.belongsTo(Users, { foreignKey: "userEmail" });
 
-//role
-Roles.hasMany(Users, { foreignKey: "rolesId" });
-Users.belongsTo(Roles, { foreignKey: "rolesId" });
-//appointment
-// Appointments.hasMany(Users, { foreignKey: "appointmentId" });
-// Users.belongsTo(Appointments, { foreignKey: "appointmentId" });
+Doctor.hasMany(Appointments, { foreignKey: "doctorEmail" });
+Appointments.belongsTo(Doctor, { foreignKey: "doctorEmail" });
 
-Users.hasMany(userAppointment, { foreignKey: "userId" });
-userAppointment.belongsTo(Users, { foreignKey: "userId" });
-Appointments.hasMany(userAppointment, { foreignKey: "appointmentId" });
-userAppointment.belongsTo(Appointments, { foreignKey: "appointmentId" });
 const models = {
   Users,
-  signup,
   Appointments,
-  Roles,
   Messages,
-  userAppointment,
+  Doctor,
+  Admin,
 };
 
 const db = {};

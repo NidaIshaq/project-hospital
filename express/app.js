@@ -3,11 +3,11 @@ var express = require("express");
 //var path = require('path');
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+var cors = require("cors");
 
 // var indexRouter = require('./routes/index');
 // var usersRouter = require('./routes/users');
 
-var Router = require("./routes/signupRouter");
 var userRouter = require("./routes/userRouter");
 var authRouter = require("./routes/authRouter");
 var messageRouter = require("./routes/messageRouter");
@@ -21,11 +21,16 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(
+  cors({
+    origin: true,
+    credendtials: true,
+  })
+);
 //app.use(express.static(path.join(__dirname, "public")));
 
 // app.use('/', indexRouter);
 // app.use('/users', usersRouter);
-app.use("/signup", Router);
 app.use("/user", userRouter);
 app.use("/auth", authRouter);
 app.use("/message", messageRouter);

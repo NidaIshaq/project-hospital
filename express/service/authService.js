@@ -6,8 +6,8 @@ module.exports = {
   login: async (body) => {
     try {
       const user = await userModel.getuserByuserName(body.userName);
-
       if (user.error || user.response == null) {
+        //console.log("error", user.error);
         return {
           error: "Invalid Credentials",
         };
@@ -17,6 +17,7 @@ module.exports = {
         user.response.dataValues.password
       );
       if (!isValid) {
+        console.log("data", isValid);
         return {
           error: "Invalid Credentials",
         };

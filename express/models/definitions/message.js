@@ -11,7 +11,7 @@ Messages.init(
       allowNull: false,
     },
     email: {
-      unique: true,
+      primaryKey: true,
       type: DataTypes.STRING(),
       required: true,
     },

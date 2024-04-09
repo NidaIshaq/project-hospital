@@ -3,40 +3,39 @@ const sequelize = require("../../bin/dbConnection");
 class Users extends Model {}
 Users.init(
   {
-    userId: {
+    userEmail: {
       primaryKey: true,
-      type: DataTypes.STRING(),
-    },
-    email: {
-      unique: true,
       type: DataTypes.STRING(),
       allowNull: false,
     },
     userName: {
+      unique: true,
+      type: DataTypes.STRING(),
+      allowNull: false,
+    },
+    password: {
       type: DataTypes.STRING(),
       allowNull: false,
     },
 
-    password: {
-      type: DataTypes.STRING(),
-      allowNull: false,
-      unique: true,
-    },
     phone: {
       type: DataTypes.STRING(),
-      required: true,
+      allowNull: false,
     },
     nic: {
       type: DataTypes.STRING(),
-      required: true,
+      allowNull: false,
     },
     dob: {
       type: DataTypes.STRING(),
-      required: true,
+      allowNull: false,
     },
     gender: {
       type: DataTypes.STRING(),
-      required: true,
+      allowNull: false,
+    },
+    usertype: {
+      type: DataTypes.STRING(),
     },
   },
   {

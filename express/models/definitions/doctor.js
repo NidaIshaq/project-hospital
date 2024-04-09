@@ -1,29 +1,29 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../../bin/dbConnection");
 
-class Appointments extends Model {}
+class Doctor extends Model {}
 
-Appointments.init(
+Doctor.init(
   {
-    patientId: {
-      type: DataTypes.STRING(),
-      allowNull: false,
-    },
     userName: {
       unique: true,
       type: DataTypes.STRING(),
       allowNull: false,
     },
-    email: {
+    doctorEmail: {
       primaryKey: true,
       type: DataTypes.STRING(),
-      allowNull: false,
+      required: true,
     },
-    phone: {
+    department: {
       type: DataTypes.STRING(),
       allowNull: false,
     },
     nic: {
+      type: DataTypes.STRING(),
+      allowNull: false,
+    },
+    password: {
       type: DataTypes.STRING(),
       allowNull: false,
     },
@@ -35,32 +35,13 @@ Appointments.init(
       type: DataTypes.STRING(),
       allowNull: false,
     },
-    appointment_date: {
-      type: DataTypes.STRING(),
-      allowNull: false,
-    },
-    department: {
-      type: DataTypes.STRING(),
-      allowNull: false,
-    },
 
-    doctorName: {
+    phone: {
       type: DataTypes.STRING(),
-      allowNull: false,
+      required: true,
     },
-    hasVisited: {
-      type: DataTypes.BOOLEAN(),
-      default: false,
-    },
-    address: {
+    usertype: {
       type: DataTypes.STRING(),
-      allowNull: false,
-    },
-
-    status: {
-      type: DataTypes.STRING(),
-      enum: ["Pending", "Accepted", "Rejected"],
-      default: "Pending",
     },
   },
   {
@@ -69,4 +50,4 @@ Appointments.init(
     sequelize,
   }
 );
-module.exports = Appointments;
+module.exports = Doctor;

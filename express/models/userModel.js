@@ -1,11 +1,12 @@
 const { models } = require("./index");
 const { Op } = require("sequelize");
 module.exports = {
-  createRole: async (body) => {
+  //dr
+  createdr: async (body) => {
     try {
-      const role = await models.Roles.create({ ...body });
+      const createddr = await models.Doctor.create({ ...body });
       return {
-        response: role,
+        response: createddr,
       };
     } catch (error) {
       return {
@@ -13,14 +14,21 @@ module.exports = {
       };
     }
   },
-  getRole: async () => {
+  getAlldr: async () => {
     try {
-      const role = await models.Roles.findAll({
-        attributes: ["rolesId", "rolename"],
+      const createddr = await models.Doctor.findAll({
+        attributes: [
+          "doctorEmail",
+          "userName",
+          "phone",
+          "dob",
+          "department",
+          "nic",
+          "gender",
+        ],
       });
-
       return {
-        response: role,
+        response: createddr,
       };
     } catch (error) {
       return {
@@ -28,25 +36,25 @@ module.exports = {
       };
     }
   },
-  //user
-  createappointment: async (body) => {
+
+  //admin
+  createAdmin: async (body) => {
     try {
-      const appointment = await models.Appointments.create({ ...body });
+      const createdadmin = await models.Admin.create({ ...body });
       return {
-        response: appointment,
+        response: createdadmin,
       };
     } catch (error) {
-      //console.log("modererr", error);
       return {
         error: error.message,
       };
     }
   },
 
+  //user
   createuser: async (body) => {
     try {
       const createduser = await models.Users.create({ ...body });
-      //console.log("body", body);
       return {
         response: createduser,
       };
@@ -56,34 +64,22 @@ module.exports = {
       };
     }
   },
+
   getAlluser: async () => {
     try {
       const createduser = await models.Users.findAll({
-        attributes: ["userName", "userId"],
-
-        include: [
-          {
-            model: models.Appointments,
-            attributes: ["appointmentId", "userName"],
-          },
-          {
-            model: models.Roles,
-            attributes: ["rolesId", "rolename"],
-          },
-        ],
+        attributes: ["userName", "userEmail", "phone", "dob", "gender"],
       });
-      //console.log("user data", createduser);
       return {
         response: createduser,
       };
     } catch (error) {
-      //console.log("appointment", error);
       return {
         error: error.message,
       };
     }
   },
- 
+
   getuserByuserName: async (userName) => {
     try {
       const user = await models.Users.findOne({
@@ -91,7 +87,8 @@ module.exports = {
           userName: userName,
         },
       });
-      //console.log("user data", user);
+      //console.log("data5", user);
+
       return {
         response: user,
       };
@@ -102,11 +99,11 @@ module.exports = {
     }
   },
 
-  deleteuser: async (userId) => {
+  deleteuser: async (userEmail) => {
     try {
       const deletedUser = await models.Users.destroy({
         where: {
-          userId: userId,
+          userEmail: userEmail,
         },
       });
       return {
@@ -142,7 +139,7 @@ module.exports = {
       };
     }
   },
-  recoveruser: async (body, userId) => {
+  recoveruser: async (body, userEmail) => {
     try {
       const updatedUser = await models.Users.update(
         {
@@ -150,7 +147,7 @@ module.exports = {
         },
         {
           where: {
-            userId: userId,
+            userEmail: userEmail,
           },
         }
       );
@@ -163,24 +160,15 @@ module.exports = {
       };
     }
   },
-  getuserByUserId: async (userId) => {
+  getuserByUserEmail: async (userEmail) => {
     try {
       const user = await models.Users.findOne({
         where: {
-          userId: userId,
+          userEmail: userEmail,
         },
-        attributes: ["userId", "username", "appointmentId", "rolesId"],
-        include: [
-          {
-            model: models.Appointments,
-            attributes: ["appointmentId", "disease"],
-          },
-          {
-            model: models.Roles,
-            attributes: ["rolesId", "rolename"],
-          },
-        ],
+        attributes: ["userName", "userEmail", "phone", "dob", "gender"],
       });
+
       return {
         response: user,
       };
@@ -191,11 +179,23 @@ module.exports = {
     }
   },
   //appointment
-  deleteappointment: async (appointmentId) => {
+  createappointment: async (body) => {
+    try {
+      const appointment = await models.Appointments.create({ ...body });
+      return {
+        response: appointment,
+      };
+    } catch (error) {
+      return {
+        error: error.message,
+      };
+    }
+  },
+  deleteappointment: async (userEmail) => {
     try {
       const deletedAppointment = await models.Appointments.destroy({
         where: {
-          appointmentId: appointmentId,
+          userEmail: userEmail,
         },
       });
       return {
@@ -211,11 +211,13 @@ module.exports = {
     try {
       const createdappointment = await models.Appointments.findAll({
         attributes: [
-          "phone",
+          "userName",
+          "department",
           "email",
-          "appointmentId",
           "status",
           "appointment_date",
+          "doctorName",
+          "hasVisited",
         ],
       });
       return {

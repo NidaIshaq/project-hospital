@@ -2,101 +2,79 @@ const userModel = require("../models/userModel");
 const { hash } = require("bcryptjs");
 const { v4: uuid } = require("uuid");
 module.exports = {
-  createRole: async (body) => {
-    try {
-      body.rolesId = uuid();
-      const role = await userModel.createRole(body);
-      if (role.error) {
-        return {
-          error: role.error,
-        };
-      }
-      return {
-        response: role.response,
-      };
-    } catch (error) {
-      return {
-        error: error.message,
-      };
-    }
-  },
-  getRole: async () => {
-    try {
-      const role = await userModel.getRole();
-      if (role.error) {
-        return {
-          error: role.error,
-        };
-      }
-      return {
-        response: role.response,
-      };
-    } catch (error) {
-      return {
-        error: error.message,
-      };
-    }
-  },
-  createappointment: async (body) => {
-    try {
-      const appointment = {
-        appointmentId: uuid(),
-        userName: body.userName,
-        email: body.email,
-        phone: body.phone,
-        nic: body.nic,
-        dob: body.dob,
-        gender: body.gender,
-        appointment_date: body.appointment_date,
-        status: body.status,
-      };
-      const createAppoint = await userModel.createappointment(appointment);
-      if (createAppoint.error) {
-        //console.log("mcreateerr", error);
-
-        return {
-          error: createAppoint.error,
-        };
-      }
-      return {
-        response: createAppoint.response,
-      };
-    } catch (error) {
-      return {
-        error: error.message,
-      };
-    }
-  },
   createuser: async (body) => {
     try {
       const isUser = await userModel.getuserByuserName(body.userName);
+      //console.log("data error", isUser);
       if (isUser.error || isUser.response) {
-        //console.log("check user error", body.phone);
         return {
           error: "user with this username already exist",
         };
       }
 
+      if (body.usertype.toLowerCase() === "doctor") {
+        const doctor = {
+          userName: body.userName,
+          department: body.department,
+          nic: body.nic,
+          password: await hash(body.password, 10),
+          dob: body.dob,
+          gender: body.gender,
+          doctorEmail: body.doctorEmail,
+          phone: body.phone,
+          usertype: body.usertype,
+        };
+        const createdDr = await userModel.createdr(doctor);
+        if (createdDr.error) {
+          return {
+            error: "Error creating doctor:" + createdDr.error,
+          };
+        }
+        delete createdDr.response.dataValues.password;
+        return {
+          response: createdDr.response,
+        };
+      }
+      //admin
+
+      if (body.usertype.toLowerCase() === "admin") {
+        const admin = {
+          userName: body.userName,
+          nic: body.nic,
+          password: await hash(body.password, 10),
+          dob: body.dob,
+          gender: body.gender,
+          email: body.email,
+          phone: body.phone,
+          usertype: body.usertype,
+        };
+        const createdAdmin = await userModel.createAdmin(admin);
+        if (createdAdmin.error) {
+          return {
+            error: createdAdmin.error,
+          };
+        }
+        delete createdAdmin.response.dataValues.password;
+        return {
+          response: createdAdmin.response,
+        };
+      }
+      //patient
       const user = {
         userId: uuid(),
         password: await hash(body.password, 10),
-        rolesId: body.rolesId,
-        email: body.email,
-        appointmentId: body.appointmentId,
+        userEmail: body.userEmail,
         userName: body.userName,
-
         phone: body.phone,
         nic: body.nic,
-        dob: body.password,
+        dob: body.dob,
         gender: body.gender,
+        usertype: body.usertype,
       };
       const createduser = await userModel.createuser(user);
-      //console.log("data", user);
       if (createduser.error) {
-        //console.log("createuser", user);
-
         return {
-          error: createduser.error,
+          error: "Error creating user:" + createduser.error,
         };
       }
       //delete password before show on frontend coz its confidential
@@ -105,8 +83,23 @@ module.exports = {
         response: createduser.response,
       };
     } catch (error) {
-      //console.log("serviceerr", error);
-
+      return {
+        error: error.message,
+      };
+    }
+  },
+  getAlldr: async () => {
+    try {
+      const drs = await userModel.getAlldr();
+      if (drs.error) {
+        return {
+          error: drs.error,
+        };
+      }
+      return {
+        response: drs.response,
+      };
+    } catch (error) {
       return {
         error: error.message,
       };
@@ -132,7 +125,7 @@ module.exports = {
   },
   deleteuser: async (query) => {
     try {
-      const deletedUser = await userModel.deleteuser(query.userId);
+      const deletedUser = await userModel.deleteuser(query.userEmail);
       if (deletedUser.error) {
         return {
           error: deletedUser.error,
@@ -140,6 +133,23 @@ module.exports = {
       }
       return {
         response: deletedUser.response,
+      };
+    } catch (error) {
+      return {
+        error: error.message,
+      };
+    }
+  },
+  getuserByUserEmail: async (query) => {
+    try {
+      const user = await userModel.getuserByUserEmail(query.userEmail);
+      if (user.error) {
+        return {
+          error: user.error,
+        };
+      }
+      return {
+        response: user.response,
       };
     } catch (error) {
       return {
@@ -166,7 +176,7 @@ module.exports = {
   },
   recoveruser: async (body) => {
     try {
-      const updatedUser = await userModel.recoveruser(body, body.userId);
+      const updatedUser = await userModel.recoveruser(body, body.userEmail);
       if (updatedUser.error) {
         return {
           error: updatedUser.error,
@@ -181,16 +191,35 @@ module.exports = {
       };
     }
   },
-  getuserByUserId: async (query) => {
+
+  //appointment
+  createappointment: async (body) => {
     try {
-      const user = await userModel.getuserByUserId(query.userId);
-      if (user.error) {
+      const appointment = {
+        userName: body.userName,
+        email: body.email,
+        phone: body.phone,
+        nic: body.nic,
+        dob: body.dob,
+        gender: body.gender,
+        appointment_date: body.appointment_date,
+        department: body.department,
+        doctorName: body.doctorName,
+        hasVisited: body.hasVisited,
+        address: body.address,
+        patientId: uuid(),
+        status: body.status,
+        userEmail: body.userEmail,
+        doctorEmail: body.doctorEmail,
+      };
+      const createAppoint = await userModel.createappointment(appointment);
+      if (createAppoint.error) {
         return {
-          error: user.error,
+          error: createAppoint.error,
         };
       }
       return {
-        response: user.response,
+        response: createAppoint.response,
       };
     } catch (error) {
       return {
@@ -198,12 +227,9 @@ module.exports = {
       };
     }
   },
-  //appointment
   deleteappointment: async (query) => {
     try {
-      const deletedAppointment = await userModel.deleteappointment(
-        query.appointmentId
-      );
+      const deletedAppointment = await userModel.deleteappointment(query.email);
       if (deletedAppointment.error) {
         return {
           error: deletedAppointment.error,
