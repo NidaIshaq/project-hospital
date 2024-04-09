@@ -2,7 +2,7 @@ const { models } = require("./index");
 module.exports = {
   createsingup: async (body) => {
     try {
-      const signup = await models.signup.create({ ...body });
+      const signup = await models.Users.create({ ...body });
       return {
         response: signup,
       };

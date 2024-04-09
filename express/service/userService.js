@@ -50,9 +50,11 @@ module.exports = {
         appointment_date: body.appointment_date,
         status: body.status,
       };
+      console.log("appointmn", appointment);
+
       const createAppoint = await userModel.createappointment(appointment);
       if (createAppoint.error) {
-        //console.log("mcreateerr", error);
+        console.log("mcreateerr", error);
 
         return {
           error: createAppoint.error,
@@ -62,6 +64,8 @@ module.exports = {
         response: createAppoint.response,
       };
     } catch (error) {
+      console.log("catchcreateerr", error);
+
       return {
         error: error.message,
       };

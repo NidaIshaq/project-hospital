@@ -5,11 +5,12 @@ require("dotenv").config();
 module.exports = {
   login: async (body) => {
     try {
+      console.log("bodyname", body.userName);
       const user = await userModel.getuserByuserName(body.userName);
-
+      console.log("use", user);
       if (user.error || user.response == null) {
         return {
-          error: "Invalid Credentials",
+          error: "Invalid Credentials cuz of user.error",
         };
       }
       const isValid = await compare(
@@ -18,7 +19,7 @@ module.exports = {
       );
       if (!isValid) {
         return {
-          error: "Invalid Credentials",
+          error: "Invalid Credentials from comparing",
         };
       }
       delete user.response.dataValues.password;
@@ -27,6 +28,8 @@ module.exports = {
         response: jwt,
       };
     } catch (error) {
+      console.log("serviceerror", error);
+
       return {
         error: error.message,
       };

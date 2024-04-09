@@ -14,6 +14,7 @@ module.exports = {
   createsignup: async (req, res) => {
     try {
       const validate = await createsignupSchema.validateAsync(req.body);
+
       const signup = await signupService.createsignup(validate);
 
       if (signup.error) {

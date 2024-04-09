@@ -7,8 +7,8 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 const Register = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [userName, setuserName] = useState("");
+
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [nic, setNic] = useState("");
@@ -23,19 +23,18 @@ const Register = () => {
     try {
       await axios
         .post(
-          "http://localhost:4000/api/v1/user/patient/register",
-          { firstName, lastName, email, phone, nic, dob, gender, password },
+          "http://localhost:4000/signup/createsignup",
+          { userName, email, phone, nic, dob, gender, password },
           {
             withCredentials: true,
-            headers: { "Content-Type": "application/json" },
           }
         )
         .then((res) => {
           toast.success(res.data.message);
           setIsAuthenticated(true);
           navigateTo("/");
-          setFirstName("");
-          setLastName("");
+          setuserName("");
+
           setEmail("");
           setPhone("");
           setNic("");
@@ -63,14 +62,8 @@ const Register = () => {
             <input
               type="text"
               placeholder="First Name"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Last Name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              value={userName}
+              onChange={(e) => setuserName(e.target.value)}
             />
           </div>
           <div>

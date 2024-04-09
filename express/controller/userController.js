@@ -3,8 +3,8 @@ const joi = require("joi");
 const createduserSchema = joi.object().keys({
   password: joi.string().required(),
   email: joi.string().required(),
-  rolesId: joi.string().required(),
-  appointmentId: joi.string().required(),
+  //rolesId: joi.string().required(),
+  //appointmentId: joi.string().required(),
   userName: joi.string().required(),
   phone: joi.number().required().min(11),
   nic: joi.number().required().min(13),
@@ -23,7 +23,7 @@ const createappointmentSchema = joi.object().keys({
   appointment_date: joi.string().required(),
   status: joi.string().required(),
   email: joi.string().required(),
-  userId: joi.string().required(),
+  //userId: joi.string().required(),
 });
 const deleteuserSchema = joi.object().keys({
   userId: joi.string().required(),
@@ -84,6 +84,8 @@ module.exports = {
       const appointment = await userService.createappointment(validate);
 
       if (appointment.error) {
+        console.log("catchcreateerr val", appointment.error);
+
         return res.send({
           error: appointment.error,
         });
@@ -93,6 +95,7 @@ module.exports = {
       });
     } catch (error) {
       //console.log("modererr", error);
+      console.log("catchcreateerr app", error);
 
       return res.send({
         error: error.message,

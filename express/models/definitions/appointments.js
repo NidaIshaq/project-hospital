@@ -5,11 +5,11 @@ class Appointments extends Model {}
 
 Appointments.init(
   {
-    appointmentId: {
-      primaryKey: true,
-      type: DataTypes.STRING(),
-      allowNull: false,
-    },
+    //   appointmentId: {
+    //     primaryKey: true,
+    //     type: DataTypes.STRING(),
+    //     allowNull: false,
+    //   },
     userName: {
       unique: true,
       type: DataTypes.STRING(),

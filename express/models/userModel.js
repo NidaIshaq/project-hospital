@@ -31,12 +31,14 @@ module.exports = {
   //user
   createappointment: async (body) => {
     try {
+      console.log("boappointmn", body);
+
       const appointment = await models.Appointments.create({ ...body });
       return {
         response: appointment,
       };
     } catch (error) {
-      //console.log("modererr", error);
+      console.log("modererr", error);
       return {
         error: error.message,
       };
@@ -83,7 +85,7 @@ module.exports = {
       };
     }
   },
- 
+
   getuserByuserName: async (userName) => {
     try {
       const user = await models.Users.findOne({
@@ -91,11 +93,13 @@ module.exports = {
           userName: userName,
         },
       });
-      //console.log("user data", user);
+      console.log("user data", user);
       return {
         response: user,
       };
     } catch (error) {
+      console.log("modelerror", error);
+
       return {
         error: error.message,
       };

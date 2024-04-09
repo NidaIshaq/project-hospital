@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 
 const MessageForm = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [userName, setuserName] = useState("");
+
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
@@ -14,23 +14,21 @@ const MessageForm = () => {
     try {
       await axios
         .post(
-          "http://localhost:4000/api/v1/message/send",
-          { firstName, lastName, email, phone, message },
+          "http://localhost:4000/message/createmessage",
+          { userName, email, phone, message },
           {
             withCredentials: true,
-            headers: { "Content-Type": "application/json" },
           }
         )
         .then((res) => {
-          toast.success(res.data.message);
-          setFirstName("");
-          setLastName("");
+          toast.success(res.message);
+          setuserName("");
           setEmail("");
           setPhone("");
           setMessage("");
         });
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response.message);
     }
   };
 
@@ -42,15 +40,9 @@ const MessageForm = () => {
           <div>
             <input
               type="text"
-              placeholder="First Name"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Last Name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              placeholder="User Name"
+              value={userName}
+              onChange={(e) => setuserName(e.target.value)}
             />
           </div>
           <div>
