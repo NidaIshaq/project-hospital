@@ -93,6 +93,8 @@ module.exports = {
         response: user,
       };
     } catch (error) {
+      console.log("modelerror", error);
+
       return {
         error: error.message,
       };

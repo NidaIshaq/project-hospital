@@ -1,13 +1,14 @@
 const authService = require("../service/authService");
 const joi = require("joi");
 const loginSchema = joi.object().keys({
-  password: joi.string().required(),
   userName: joi.string().required(),
+  password: joi.string().required(),
 });
 
 module.exports = {
   login: async (req, res) => {
     try {
+      console.log("us", req.body);
       const validate = await loginSchema.validateAsync(req.body);
       const isLogin = await authService.login(validate);
       if (isLogin.error) {
@@ -25,6 +26,7 @@ module.exports = {
         response: true,
       });
     } catch (error) {
+      console.log("contrerror", error);
       return res.send({
         error: error.message,
       });

@@ -4,8 +4,8 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 
 const AppointmentForm = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [userName, setuserName] = useState("");
+
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [nic, setNic] = useState("");
@@ -30,27 +30,27 @@ const AppointmentForm = () => {
     "ENT",
   ];
 
-  const [doctors, setDoctors] = useState([]);
-  useEffect(() => {
-    const fetchDoctors = async () => {
-      const { data } = await axios.get(
-        "http://localhost:4000/api/v1/user/doctors",
-        { withCredentials: true }
-      );
-      setDoctors(data.doctors);
-      console.log(data.doctors);
-    };
-    fetchDoctors();
-  }, []);
+  // const [doctors, setDoctors] = useState([]);
+  // useEffect(() => {
+  //   const fetchDoctors = async () => {
+  //     const { data } = await axios.get(
+  //       "http://localhost:4000/api/v1/user/doctors",
+  //       { withCredentials: true }
+  //     );
+  //     setDoctors(data.doctors);
+  //     console.log(data.doctors);
+  //   };
+  //   fetchDoctors();
+  // }, []);
   const handleAppointment = async (e) => {
     e.preventDefault();
     try {
       const hasVisitedBool = Boolean(hasVisited);
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/appointment/post",
+        "http://localhost:4000/user/createappointment",
         {
-          firstName,
-          lastName,
+          userName,
+
           email,
           phone,
           nic,
@@ -58,19 +58,17 @@ const AppointmentForm = () => {
           gender,
           appointment_date: appointmentDate,
           department,
-          doctor_firstName: doctorFirstName,
-          doctor_lastName: doctorLastName,
+          // doctor_firstName: doctorFirstName,
+          // doctor_lastName: doctorLastName,
           hasVisited: hasVisitedBool,
           address,
         },
         {
           withCredentials: true,
-          headers: { "Content-Type": "application/json" },
         }
       );
       toast.success(data.message);
-      setFirstName(""),
-        setLastName(""),
+      setuserName(""),
         setEmail(""),
         setPhone(""),
         setNic(""),
@@ -78,8 +76,8 @@ const AppointmentForm = () => {
         setGender(""),
         setAppointmentDate(""),
         setDepartment(""),
-        setDoctorFirstName(""),
-        setDoctorLastName(""),
+        // setDoctorFirstName(""),
+        // setDoctorLastName(""),
         setHasVisited(""),
         setAddress("");
     } catch (error) {
@@ -96,14 +94,8 @@ const AppointmentForm = () => {
             <input
               type="text"
               placeholder="First Name"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Last Name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              value={userName}
+              onChange={(e) => setuserName(e.target.value)}
             />
           </div>
           <div>
@@ -152,8 +144,8 @@ const AppointmentForm = () => {
               value={department}
               onChange={(e) => {
                 setDepartment(e.target.value);
-                setDoctorFirstName("");
-                setDoctorLastName("");
+                // setDoctorFirstName("");
+                // setDoctorLastName("");
               }}
             >
               {departmentsArray.map((depart, index) => {
@@ -164,7 +156,7 @@ const AppointmentForm = () => {
                 );
               })}
             </select>
-            <select
+            {/* <select
               value={`${doctorFirstName} ${doctorLastName}`}
               onChange={(e) => {
                 const [firstName, lastName] = e.target.value.split(" ");
@@ -184,7 +176,7 @@ const AppointmentForm = () => {
                     {doctor.firstName} {doctor.lastName}
                   </option>
                 ))}
-            </select>
+            </select> */}
           </div>
           <textarea
             rows="4"

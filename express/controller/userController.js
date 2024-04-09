@@ -66,6 +66,8 @@ module.exports = {
       const validate = await createappointmentSchema.validateAsync(req.body);
       const appointment = await userService.createappointment(validate);
       if (appointment.error) {
+        console.log("catchcreateerr val", appointment.error);
+
         return res.send({
           error: appointment.error,
         });

@@ -7,9 +7,8 @@ import { Link, useNavigate, Navigate } from "react-router-dom";
 const Login = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
-  const [email, setEmail] = useState("");
+  const [userName, setuserName] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
 
   const navigateTo = useNavigate();
 
@@ -22,72 +21,62 @@ const Login = () => {
           { email, password },
           {
             withCredentials: true,
-            headers: { "Content-Type": "application/json" },
           }
         )
         .then((res) => {
-          toast.success(res.data.message);
-          setIsAuthenticated(true);
-          navigateTo("/");
-          setEmail("");
+          toast.success(res.message);
+          // setIsAuthenticated(true);
+          setuserName("");
           setPassword("");
-          setConfirmPassword("");
+          console.log("isauth", isAuthenticated);
+
+          navigateTo("/dashboard");
         });
+      console.log("username", userName, "password", password);
     } catch (error) {
-      toast.error(error.response.data.message);
+      console.log("eror", error);
+      toast.error(error.response.message);
     }
   };
 
-  if (isAuthenticated) {
-    return <Navigate to={"/"} />;
-  }
-
   return (
     <>
-      <div className="bg-gray-400">
-        <div className="container form-component login-form">
-          <h2>Sign In</h2>
-          <p>Please Login To Continue</p>
+      <div className="container form-component login-form">
+        <h2>Login</h2>
+        <p>Please Login To Continue</p>
 
-          <form onSubmit={handleLogin}>
-            <input
-              type="text"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-            <div
-              style={{
-                gap: "10px",
-                justifyContent: "flex-end",
-                flexDirection: "row",
-              }}
+        <form onSubmit={handleLogin}>
+          <input
+            type="text"
+            placeholder="userName"
+            value={userName}
+            onChange={(e) => setuserName(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <div
+            style={{
+              gap: "10px",
+              justifyContent: "flex-end",
+              flexDirection: "row",
+            }}
+          >
+            <p style={{ marginBottom: 0 }}>Not Registered?</p>
+            <Link
+              to={"/register"}
+              style={{ textDecoration: "none", color: "#271776ca" }}
             >
-              <p style={{ marginBottom: 0 }}>Not Registered?</p>
-              <Link
-                to={"/register"}
-                style={{ textDecoration: "none", color: "#271776ca" }}
-              >
-                Register Now
-              </Link>
-            </div>
-            <div style={{ justifyContent: "center", alignItems: "center" }}>
-              <button type="submit">Login</button>
-            </div>
-          </form>
-        </div>
+              Register Now
+            </Link>
+          </div>
+          <div style={{ justifyContent: "center", alignItems: "center" }}>
+            <button type="submit">Login</button>
+          </div>
+        </form>
       </div>
     </>
   );
