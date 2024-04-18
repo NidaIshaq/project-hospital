@@ -67,6 +67,39 @@ h6 {
 .container {
   padding: 0 100px;
 }
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #ffffff;
+  z-index: 2;
+}
+
+.sidebar {
+  z-index: 1;
+  position: relative;
+  top: 150px;
+  left: 0;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+}
+
+.dashboard {
+  margin-top: 150px;
+  width: 80%;
+  margin-right: 10%;
+}
+
+.mainclass {
+  display: flex;
+  width: 100%;
+}
+
 @media (max-width: 700px) {
   .container {
     padding: 0 20px;
@@ -395,15 +428,17 @@ footer .content div:last-child div svg {
   position: relative;
   border-radius: 8px;
   flex: 1;
-  display: flex;
+ background-color: #ffffff;
   justify-content: center;
   align-items: flex-end;
-  padding-bottom: 15px;
+  padding-bottom: 20px;
+  padding-top: 20px;
   padding-left: 10px;
   padding-right: 20px;
-  min-height: 360px;
+
   margin: 0 10px;
   text-decoration: none;
+  margin-top: 10%;
 }
 .card img {
   position: absolute;
@@ -411,7 +446,7 @@ footer .content div:last-child div svg {
   height: 100%;
   z-index: -1;
   top: 0;
-  left: 0;
+ 
 }
 .card .depart-name {
   margin-bottom: 30px;
@@ -586,4 +621,81 @@ input[type="time"]:before {
 }
 footer .logo-img {
   width: 100%;
+}
+/*dashboard */
+.page {
+  margin-left: 120px;
+  background: #e5e5e5;
+  padding: 40px;
+  height: 100vh;
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
+}
+@media (max-width: 1208px) {
+  .page {
+    margin-left: 0;
+    border-radius: 0;
+  }
+}
+@media (max-width: 485px) {
+  .page {
+    padding: 40px 20px;
+  }
+}
+@media (max-width: 460px) {
+  .logo {
+    width: 100%;
+  }
+}
+
+.messages h1 {
+  color: #3939d9f2;
+  margin-bottom: 30px;
+  font-size: 2.3rem;
+}
+.messages .banner {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.messages .banner .card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+}
+.messages .banner .card div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 20px;
+}
+.messages .banner .card div p {
+  font-weight: 700;
+  background: #fff;
+}
+.messages .banner .card div p span {
+  font-weight: 500;
+}
+.form-component .wrapper .banner {
+  flex: 1;
+}
+.form-component .wrapper .banner:last-child {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.form-component .wrapper .banner:last-child img {
+  max-width: 450px;
+}
+.users h1 {
+  color: #3939d9f2;
+  margin-bottom: 30px;
+  font-size: 2.3rem;
+}
+
+.doctors h1 {
+  color: #3939d9f2;
+  margin-bottom: 30px;
+  font-size: 2.3rem;
 }

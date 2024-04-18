@@ -7,10 +7,6 @@ module.exports = {
     try {
       console.log("bodyname", body.userName);
       const user = await userModel.getuserByuserName(body.userName);
-<<<<<<< HEAD
-=======
-      console.log("use", user);
->>>>>>> 3959a399c4ce69aad7f9959f9ddd2ff11c9d0b6f
       if (user.error || user.response == null) {
         //console.log("error", user.error);
         return {
