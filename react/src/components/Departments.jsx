@@ -72,8 +72,7 @@ const Departments = () => {
         <Carousel
           responsive={responsive}
           removeArrowOnDeviceType={[
-            // "superLargeDesktop",
-            // "desktop",
+            
             "tablet",
             "mobile",
           ]}

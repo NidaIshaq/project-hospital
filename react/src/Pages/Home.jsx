@@ -3,10 +3,13 @@ import Hero from "../components/Hero";
 import Biography from "../components/Biography";
 import Departments from "../components/Departments";
 import MessageForm from "../components/MessageForm";
-//import AppointmentForm from "../components/AppointmentForm";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+
 function Home() {
   return (
     <>
+      <Navbar />
       <Hero
         title={
           "Welcome to WellSpring Medical Institute | Your Trusted Healthcare Provider"
@@ -17,6 +20,7 @@ function Home() {
 
       <Departments />
       <MessageForm />
+      <Footer />
     </>
   );
 }

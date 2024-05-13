@@ -3,7 +3,9 @@ const { models } = require("./index");
 module.exports = {
   createMessage: async (body) => {
     try {
+      console.log("body of model1", body);
       const messages = await models.Messages.create({ ...body });
+      console.log("body of model", body);
       return {
         response: messages,
       };

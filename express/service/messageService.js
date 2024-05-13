@@ -1,3 +1,4 @@
+//const { response } = require("../app");
 const messageModel = require("../models/messageModel");
 module.exports = {
   createMessage: async (body) => {
@@ -8,8 +9,9 @@ module.exports = {
         phone: body.phone,
         message: body.message,
       };
+      console.log("service message error1 ", message);
       const createdmessages = await messageModel.createMessage(message);
-
+      console.log("service message error ", message);
       return {
         response: createdmessages.response,
       };

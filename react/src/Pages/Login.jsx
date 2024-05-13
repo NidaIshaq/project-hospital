@@ -1,8 +1,10 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
-import { toast } from "react-toastify";
+
 import { Context } from "../main";
-import { Link, useNavigate, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const Login = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
@@ -10,37 +12,28 @@ const Login = () => {
   const [userName, setuserName] = useState("");
   const [password, setPassword] = useState("");
 
-  const navigateTo = useNavigate();
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    try {
-      await axios
-        .post(
-          "http://localhost:4000/api/v1/user/login",
-          { email, password },
-          {
-            withCredentials: true,
-          }
-        )
-        .then((res) => {
-          toast.success(res.message);
-          // setIsAuthenticated(true);
-          setuserName("");
-          setPassword("");
-          console.log("isauth", isAuthenticated);
-
-          navigateTo("/dashboard");
-        });
-      console.log("username", userName, "password", password);
-    } catch (error) {
-      console.log("eror", error);
-      toast.error(error.response.message);
+    const { data } = await axios.post(
+      "http://localhost:4000/auth/login",
+      { userName, password },
+      {
+        withCredentials: true,
+      }
+    );
+    if (data.error) {
+      return alert("invalid credentials");
     }
+    setIsAuthenticated(true);
+    alert("logged in successfully");
+    return navigate("/dashboardlayout");
   };
 
   return (
     <>
+      <Navbar />;
       <div className="container form-component login-form">
         <h2>Login</h2>
         <p>Please Login To Continue</p>
@@ -75,9 +68,11 @@ const Login = () => {
           </div>
           <div style={{ justifyContent: "center", alignItems: "center" }}>
             <button type="submit">Login</button>
+           
           </div>
         </form>
       </div>
+      <Footer />
     </>
   );
 };
