@@ -2,19 +2,22 @@ const userModel = require("../models/userModel");
 const { compare } = require("bcryptjs");
 const { sign } = require("jsonwebtoken");
 require("dotenv").config();
+
 module.exports = {
   login: async (body) => {
     try {
-      console.log("bodyname", body.userName);
+      //console.log("bodyname", body.userName);
       const user = await userModel.getuserByuserName(body.userName);
-<<<<<<< HEAD
-=======
-      console.log("use", user);
->>>>>>> 3959a399c4ce69aad7f9959f9ddd2ff11c9d0b6f
       if (user.error || user.response == null) {
         //console.log("error", user.error);
         return {
-          error: "Invalid Credentials cuz of user.error",
+          error: "Invalid Credentials for user",
+        };
+      }
+      const doctor = await userModel.getdoctorByuserName(body.userName);
+      if (doctor.error || doctor.response) {
+        return {
+          error: "Invalid Credential for doctor",
         };
       }
       const isValid = await compare(
@@ -22,7 +25,7 @@ module.exports = {
         user.response.dataValues.password
       );
       if (!isValid) {
-        console.log("data", isValid);
+        // console.log("data", isValid);
         return {
           error: "Invalid Credentials from comparing",
         };
@@ -33,7 +36,7 @@ module.exports = {
         response: jwt,
       };
     } catch (error) {
-      console.log("serviceerror", error);
+      //console.log("serviceerror", error);
 
       return {
         error: error.message,

@@ -8,7 +8,7 @@ const loginSchema = joi.object().keys({
 module.exports = {
   login: async (req, res) => {
     try {
-      console.log("us", req.body);
+      //console.log("us", req.body);
       const validate = await loginSchema.validateAsync(req.body);
       const isLogin = await authService.login(validate);
       if (isLogin.error) {
@@ -26,7 +26,7 @@ module.exports = {
         response: true,
       });
     } catch (error) {
-      console.log("contrerror", error);
+      // console.log("contrerror", error);
       return res.send({
         error: error.message,
       });

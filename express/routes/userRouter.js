@@ -2,6 +2,7 @@
 const routes = require("express").Router();
 const {
   createuser,
+  createdr,
   createappointment,
   deleteappointment,
   getAllappointment,
@@ -14,6 +15,7 @@ const {
 } = require("../controller/userController");
 routes.post("/createappointment", createappointment);
 routes.post("/createuser", createuser);
+routes.post("/createdr", createdr);
 //routes.get("/getAlluser", middleware, getAlluser);
 routes.get("/getAlluser", getAlluser);
 routes.get("/getAlldr", getAlldr);

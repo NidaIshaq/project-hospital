@@ -1,6 +1,7 @@
 const userModel = require("../models/userModel");
 const { hash } = require("bcryptjs");
 const { v4: uuid } = require("uuid");
+
 module.exports = {
   createuser: async (body) => {
     try {
@@ -11,30 +12,36 @@ module.exports = {
           error: "user with this username already exist",
         };
       }
+      // const isDoctor = await userModel.getdoctorByuserName(body.userName);
+      // if (isDoctor.error || isDoctor.response) {
+      //   return {
+      //     error: "doctor with username already exist",
+      //   };
+      // }
 
-      if (body.usertype.toLowerCase() === "doctor") {
-        const doctor = {
-          userName: body.userName,
-          department: body.department,
-          nic: body.nic,
-          password: await hash(body.password, 10),
-          dob: body.dob,
-          gender: body.gender,
-          doctorEmail: body.doctorEmail,
-          phone: body.phone,
-          usertype: body.usertype,
-        };
-        const createdDr = await userModel.createdr(doctor);
-        if (createdDr.error) {
-          return {
-            error: "Error creating doctor:" + createdDr.error,
-          };
-        }
-        delete createdDr.response.dataValues.password;
-        return {
-          response: createdDr.response,
-        };
-      }
+      // if (body.usertype.toLowerCase() === "doctor") {
+      //   const doctor = {
+      //     userName: body.userName,
+      //     department: body.department,
+      //     nic: body.nic,
+      //     password: await hash(body.password, 10),
+      //     dob: body.dob,
+      //     gender: body.gender,
+      //     doctorEmail: body.doctorEmail,
+      //     phone: body.phone,
+      //     usertype: body.usertype,
+      //   };
+      //   const createdDr = await userModel.createdr(doctor);
+      //   if (createdDr.error) {
+      //     return {
+      //       error: "Error creating doctor:" + createdDr.error,
+      //     };
+      //   }
+      //   delete createdDr.response.dataValues.password;
+      //   return {
+      //     response: createdDr.response,
+      //   };
+      // }
       //admin
 
       if (body.usertype.toLowerCase() === "admin") {
@@ -82,6 +89,44 @@ module.exports = {
       return {
         response: createduser.response,
       };
+    } catch (error) {
+      return {
+        error: error.message,
+      };
+    }
+  },
+  createdr: async (body) => {
+    try {
+      const isDoctor = await userModel.getdoctorByuserName(body.userName);
+      if (isDoctor.error || isDoctor.response) {
+        return {
+          error: "doctor with username already exist",
+        };
+      }
+
+      if (body.usertype.toLowerCase() === "doctor") {
+        const doctor = {
+          userName: body.userName,
+          department: body.department,
+          nic: body.nic,
+          password: await hash(body.password, 10),
+          dob: body.dob,
+          gender: body.gender,
+          doctorEmail: body.doctorEmail,
+          phone: body.phone,
+          usertype: body.usertype,
+        };
+        const createdDr = await userModel.createdr(doctor);
+        if (createdDr.error) {
+          return {
+            error: "Error creating doctor:" + createdDr.error,
+          };
+        }
+        delete createdDr.response.dataValues.password;
+        return {
+          response: createdDr.response,
+        };
+      }
     } catch (error) {
       return {
         error: error.message,

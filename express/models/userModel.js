@@ -93,7 +93,27 @@ module.exports = {
         response: user,
       };
     } catch (error) {
-      console.log("modelerror", error);
+      // console.log("modelerror", error);
+
+      return {
+        error: error.message,
+      };
+    }
+  },
+  getdoctorByuserName: async (userName) => {
+    try {
+      const doctor = await models.Doctor.findOne({
+        where: {
+          userName: userName,
+        },
+      });
+      //console.log("data5", user);
+
+      return {
+        response: doctor,
+      };
+    } catch (error) {
+      //console.log("modelerror", error);
 
       return {
         error: error.message,
@@ -101,6 +121,26 @@ module.exports = {
     }
   },
 
+  getadminByuserName: async (userName) => {
+    try {
+      const admin = await models.Admin.findOne({
+        where: {
+          userName: userName,
+        },
+      });
+      //console.log("data5", user);
+
+      return {
+        response: admin,
+      };
+    } catch (error) {
+      //console.log("modelerror", error);
+
+      return {
+        error: error.message,
+      };
+    }
+  },
   deleteuser: async (userEmail) => {
     try {
       const deletedUser = await models.Users.destroy({

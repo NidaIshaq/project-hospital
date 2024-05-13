@@ -1,3 +1,4 @@
+const { createdr } = require("../models/userModel");
 const userService = require("../service/userService");
 const joi = require("joi");
 const createduserSchema = joi.object().keys({
@@ -12,6 +13,17 @@ const createduserSchema = joi.object().keys({
   department: joi.string().required(),
   doctorEmail: joi.string().required(),
   email: joi.string().required(),
+});
+const createddrSchema = joi.object().keys({
+  password: joi.string().required(),
+  userName: joi.string().required(),
+  phone: joi.number().required(),
+  nic: joi.number().required(),
+  dob: joi.string().required(),
+  gender: joi.string().required(),
+  usertype: joi.string().required(),
+  department: joi.string().required(),
+  doctorEmail: joi.string().required(),
 });
 const createappointmentSchema = joi.object().keys({
   userName: joi.string().required(),
@@ -92,6 +104,24 @@ module.exports = {
       }
       return res.send({
         response: createduser.response,
+      });
+    } catch (error) {
+      return res.send({
+        error: error.message,
+      });
+    }
+  },
+  createdr: async (req, res) => {
+    try {
+      const validate = await createddrSchema.validateAsync(req.body);
+      const createddr = await userService.createdr(validate);
+      if (createddr.error) {
+        return res.send({
+          error: createddr.error,
+        });
+      }
+      return res.send({
+        response: createddr.response,
       });
     } catch (error) {
       return res.send({
